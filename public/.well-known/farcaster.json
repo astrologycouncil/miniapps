@@ -1,4 +1,9 @@
 {
+  "accountAssociation": {
+    "header": "eyJmaWQiOjEwNDk3ODMsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHhCQmQ5NjBlM2IwNkQzZUU0NzVERGI0Y0E5MTVGYmQ4RjhiMEJlODhBIn0",
+    "payload": "eyJkb21haW4iOiJ6aW5lLmFzdHJvbG9neWNvdW5jaWwub3JnIn0",
+    "signature": "MHg4OWI0M2ZjNTdjOGJjOTZhYWRmYjU1MzMxZTVhMzU1NDg4NzMxNmI2YjlhNzdlZTk5ZmQzN2UyY2YyNzc0ZWYwM2FjNzI1M2M3MzkxNDg0MTYxYTRmMzM3MDNiNDI3YTY2YjJhYjU0ZmMwYjU5YjUzOTE3NmVmMTM0MTVkZmRhNDFj"
+  },
   "miniapp": {
     "version": "1",
     "name": "Astrology Council Zine",
