@@ -7,10 +7,8 @@
   "miniapp": {
     "version": "1",
     "name": "Astrology Council Zine",
-    "iconUrl": "https://zine.astrologycouncil.org/logo.jpg?v=1",
     "homeUrl": "https://zine.astrologycouncil.org",
-    "imageUrl": "https://zine.astrologycouncil.org/logo.jpg?v=1",
-    "buttonTitle": "Read the Zine",
+    "iconUrl": "https://zine.astrologycouncil.org/logo.jpg?v=1",
     "splashImageUrl": "https://zine.astrologycouncil.org/logo.jpg?v=1",
     "splashBackgroundColor": "#7b337d"
   }
