@@ -4,6 +4,10 @@ import Page from "@layouts/Page.astro";
 
 <Page>
   <script>
+    import { sdk } from "@farcaster/miniapp-sdk";
+
+    await sdk.actions.ready();
+
     window.location.href = "/001/001";
   </script>
 </Page>
