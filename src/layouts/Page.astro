@@ -1,11 +1,24 @@
 ---
 import "@styles/global.css";
+
+const embed = {
+  version: "1",
+  imageUrl: "https://zine.astrologycouncil.org/opengraph-image.jpg?v=1",
+  button: {
+    title: "Read the Zine",
+    action: {
+      type: "launch_frame",
+    },
+  },
+};
 ---
 
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="fc:miniapp" content={JSON.stringify(embed)} />
+    <meta name="fc:frame" content={JSON.stringify(embed)} />
     <title>Astrology Council Zine</title>
   </head>
   <body class="bg-white">
