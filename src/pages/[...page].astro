@@ -1,19 +1,39 @@
 ---
 import { getCollection, render } from "astro:content";
+import Navigation from "@components/Navigation.astro";
 import Page from "@layouts/Page.astro";
 
 export async function getStaticPaths() {
   const pages = await getCollection("pages");
-  return pages.map((page) => ({
-    params: { page: page.id },
-    props: page,
-  }));
+
+  return pages.map((page) => {
+    const [issueId, pageId] = page.id.split("/");
+
+    return {
+      params: { page: `${issueId}/${pageId}` },
+      props: { page, issueId },
+    };
+  });
 }
 
-const post = Astro.props;
-const { Content } = await render(post);
+const { page, issueId } = Astro.props;
+const { Content } = await render(page);
+
+const pages = await getCollection("pages");
+const issuePages = pages
+  .filter((p) => p.id.startsWith(`${issueId}/`))
+  .sort((a, b) => a.id.localeCompare(b.id));
+
+const currentPageIndex = issuePages.findIndex((p) => p.id === page.id);
+const currentPage = currentPageIndex + 1;
+const totalPages = issuePages.length;
 ---
 
 <Page>
   <Content />
+  <Navigation
+    slot="navigation"
+    currentPage={currentPage}
+    totalPages={totalPages}
+  />
 </Page>

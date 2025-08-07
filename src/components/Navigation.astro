@@ -1,0 +1,95 @@
+---
+interface Props {
+  currentPage: number;
+  totalPages: number;
+}
+
+const { currentPage, totalPages } = Astro.props;
+---
+
+<nav
+  class="fixed bottom-4 left-1/2 -translate-x-1/2 transform rounded-full border bg-white/90 px-4 py-2 shadow-lg backdrop-blur-sm"
+>
+  <div class="flex items-center gap-4">
+    {
+      currentPage > 1 && (
+        <button
+          class="text-gray-600 transition-colors hover:text-black"
+          transition:name="nav-prev"
+          data-nav-prev
+        >
+          ←
+        </button>
+      )
+    }
+
+    <span
+      class="text-sm text-gray-600"
+      transition:name="nav-counter"
+      data-nav-counter
+    >
+      {currentPage} / {totalPages}
+    </span>
+
+    {
+      currentPage < totalPages && (
+        <button
+          class="text-gray-600 transition-colors hover:text-black"
+          transition:name="nav-next"
+          data-nav-next
+        >
+          →
+        </button>
+      )
+    }
+  </div>
+</nav>
+
+<script>
+  import { navigate } from "astro:transitions/client";
+
+  function goNext() {
+    const counter = document.querySelector("[data-nav-counter]");
+    if (!counter) return;
+
+    const currentPage = parseInt(counter.textContent?.split("/")[0] || "1");
+    const issueId = window.location.pathname.split("/")[1];
+    const nextPage = String(currentPage + 1).padStart(3, "0");
+    navigate(`/${issueId}/${nextPage}`);
+  }
+
+  function goPrev() {
+    history.back();
+  }
+
+  document.addEventListener("click", (e) => {
+    const target = e.target as HTMLElement;
+    if (target?.matches("[data-nav-prev]")) {
+      e.preventDefault();
+      goPrev();
+    }
+    if (target?.matches("[data-nav-next]")) {
+      e.preventDefault();
+      goNext();
+    }
+  });
+
+  let startX = 0;
+  document.addEventListener("touchstart", (e) => {
+    startX = e.touches[0].clientX;
+  });
+
+  document.addEventListener("touchend", (e) => {
+    const diff = startX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) {
+      const counter = document.querySelector("[data-nav-counter]");
+      if (!counter) return;
+
+      const currentPage = parseInt(counter.textContent?.split("/")[0] || "1");
+      const totalPages = parseInt(counter.textContent?.split("/")[1] || "1");
+
+      if (diff > 0 && currentPage < totalPages) goNext();
+      if (diff < 0 && currentPage > 1) goPrev();
+    }
+  });
+</script>

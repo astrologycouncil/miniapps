@@ -1,5 +1,6 @@
 ---
 import "@styles/global.css";
+import { slide, ClientRouter } from "astro:transitions";
 
 const embed = {
   version: "1",
@@ -21,12 +22,14 @@ const embed = {
     <meta name="fc:miniapp" content={JSON.stringify(embed)} />
     <meta name="fc:frame" content={JSON.stringify(embed)} />
     <title>Astrology Council Zine</title>
+    <ClientRouter />
   </head>
   <body class="bg-white">
     <main>
-      <article class="prose">
+      <article class="prose mx-auto p-8" transition:animate={slide()}>
         <slot />
       </article>
     </main>
+    <slot name="navigation" />
   </body>
 </html>
