@@ -1,13 +1,35 @@
 ---
+import { getCollection } from "astro:content";
 import Page from "@layouts/Page.astro";
+
+const pages = await getCollection("pages");
+const issues = [
+  ...new Set(pages.map((page: any) => page.id.split("/")[0])),
+].sort();
 ---
 
 <Page>
+  <h1 class="mb-1">mini zine</h1>
+  <p class="mt-0 mb-8 text-lg text-gray-600">by astrology council</p>
+
+  <ul>
+    {
+      issues.map((issueId) => (
+        <li>
+          <a
+            href={`/${issueId}/001`}
+            class="text-xl text-blue-600 underline hover:text-blue-800"
+          >
+            issue {issueId}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
   <script>
     import { sdk } from "@farcaster/miniapp-sdk";
 
     await sdk.actions.ready();
-
-    window.location.href = "/001/001";
   </script>
 </Page>
