@@ -11,17 +11,13 @@ const { currentPage, totalPages } = Astro.props;
   class="fixed bottom-4 left-1/2 -translate-x-1/2 transform rounded-full border bg-white/90 px-4 py-2 shadow-lg backdrop-blur-sm"
 >
   <div class="flex items-center gap-4">
-    {
-      currentPage > 1 && (
-        <button
-          class="text-gray-600 transition-colors hover:text-black"
-          transition:name="nav-prev"
-          data-nav-prev
-        >
-          ←
-        </button>
-      )
-    }
+    <button
+      class="text-gray-600 transition-colors hover:text-black"
+      transition:name="nav-prev"
+      data-nav-prev
+    >
+      ←
+    </button>
 
     <span
       class="text-sm text-gray-600"
@@ -89,7 +85,7 @@ const { currentPage, totalPages } = Astro.props;
       const totalPages = parseInt(counter.textContent?.split("/")[1] || "1");
 
       if (diff > 0 && currentPage < totalPages) goNext();
-      if (diff < 0 && currentPage > 1) goPrev();
+      if (diff < 0) goPrev();
     }
   });
 </script>
