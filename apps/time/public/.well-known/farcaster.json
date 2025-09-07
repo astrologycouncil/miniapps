@@ -1,4 +1,9 @@
 {
+  "accountAssociation": {
+    "header": "eyJmaWQiOjEwNDk3ODMsInR5cGUiOiJhdXRoIiwia2V5IjoiMHg4OEEzY0FhNTM0RjU3MjMzQjMyY2M1ODU4Nzc3REQ5N0E1NTM1MTUyIn0",
+    "payload": "eyJkb21haW4iOiJ0aW1lLmFzdHJvbG9neWNvdW5jaWwub3JnIn0",
+    "signature": "nnVz2qoeGKsnCv93qhydx3Wdqt/dQb49Qv7R/ALNq1EEMSkm6jdb9YrxIdBFj8iQ1+fr6Hw/2rF3XhgUsmFJCBw="
+  },
   "miniapp": {
     "version": "1",
     "name": "Time",
