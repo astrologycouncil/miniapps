@@ -1,0 +1,36 @@
+---
+import "@styles/global.css";
+
+const embed = {
+  version: "1",
+  imageUrl: "https://time.astrologycouncil.org/opengraph-image.jpg?v=1",
+  button: {
+    title: "What time is it?",
+    action: {
+      type: "launch_frame",
+      name: "Time",
+    },
+  },
+};
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="fc:miniapp" content={JSON.stringify(embed)} />
+    <meta name="fc:frame" content={JSON.stringify(embed)} />
+    <title>Time</title>
+  </head>
+  <body class="bg-white">
+    <div class="flex min-h-screen items-center justify-center">
+      <div class="font-mono text-6xl">{new Date().toLocaleTimeString()}</div>
+    </div>
+
+    <script>
+      import { sdk } from "@farcaster/miniapp-sdk";
+
+      await sdk.actions.ready();
+    </script>
+  </body>
+</html>

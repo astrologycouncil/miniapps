@@ -7,6 +7,37 @@ settings:
 importers:
   .: {}
 
+  apps/time:
+    dependencies:
+      "@farcaster/miniapp-sdk":
+        specifier: ^0.1.8
+        version: 0.1.10(typescript@5.8.3)(zod@3.25.76)
+    devDependencies:
+      "@astrojs/mdx":
+        specifier: ^4.3.1
+        version: 4.3.4(astro@5.13.5)
+      "@tailwindcss/typography":
+        specifier: ^0.5.16
+        version: 0.5.16(tailwindcss@4.1.10)
+      "@tailwindcss/vite":
+        specifier: 4.1.10
+        version: 4.1.10(vite@6.3.5)
+      astro:
+        specifier: ^5.12.5
+        version: 5.13.5(typescript@5.8.3)
+      prettier:
+        specifier: ^3.6.2
+        version: 3.6.2
+      prettier-plugin-astro:
+        specifier: ^0.14.1
+        version: 0.14.1
+      prettier-plugin-tailwindcss:
+        specifier: ^0.6.14
+        version: 0.6.14(prettier-plugin-astro@0.14.1)(prettier@3.6.2)
+      tailwindcss:
+        specifier: 4.1.10
+        version: 4.1.10
+
   apps/zine:
     dependencies:
       "@farcaster/miniapp-sdk":
