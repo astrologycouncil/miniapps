@@ -24,13 +24,23 @@ const embed = {
   </head>
   <body class="bg-white">
     <div class="flex min-h-screen items-center justify-center">
-      <div class="font-mono text-6xl">{new Date().toLocaleTimeString()}</div>
+      <div id="time" class="font-mono text-4xl"></div>
     </div>
 
     <script>
       import { sdk } from "@farcaster/miniapp-sdk";
 
       await sdk.actions.ready();
+
+      function updateTime() {
+        const timeElement = document.getElementById("time");
+        if (timeElement) {
+          timeElement.textContent = new Date().toLocaleTimeString();
+        }
+      }
+
+      updateTime();
+      setInterval(updateTime, 1000);
     </script>
   </body>
 </html>
