@@ -7,5 +7,11 @@ export default defineConfig({
   integrations: [mdx()],
   vite: {
     plugins: [tailwindcss()],
+    resolve: {
+      alias: {
+        "circular-natal-horoscope-js":
+          "/node_modules/circular-natal-horoscope-js/dist/index.js",
+      },
+    },
   },
 });

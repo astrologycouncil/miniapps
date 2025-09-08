@@ -24,18 +24,57 @@ const embed = {
   </head>
   <body class="bg-white">
     <div class="flex min-h-screen items-center justify-center">
-      <div id="time" class="font-mono text-4xl"></div>
+      <div class="text-center">
+        <div id="time" class="font-mono text-4xl"></div>
+        <div id="ascendant" class="mt-2 font-mono text-lg text-gray-600"></div>
+      </div>
     </div>
 
     <script>
       import { sdk } from "@farcaster/miniapp-sdk";
+      import { Origin, Horoscope } from "circular-natal-horoscope-js";
 
       await sdk.actions.ready();
 
+      const NYC_COORDINATES = { latitude: 40.7128, longitude: -74.006 };
+      let userCoordinates = NYC_COORDINATES;
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          userCoordinates = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          };
+        });
+      }
+
       function updateTime() {
         const timeElement = document.getElementById("time");
+        const ascendantElement = document.getElementById("ascendant");
+
         if (timeElement) {
           timeElement.textContent = new Date().toLocaleTimeString();
+        }
+
+        if (ascendantElement) {
+          const now = new Date();
+          const origin = new Origin({
+            year: now.getFullYear(),
+            month: now.getMonth(),
+            date: now.getDate(),
+            hour: now.getHours(),
+            minute: now.getMinutes(),
+            second: now.getSeconds(),
+            latitude: userCoordinates.latitude,
+            longitude: userCoordinates.longitude,
+          });
+          const horoscope = new Horoscope({
+            origin,
+            houseSystem: "placidus",
+            zodiac: "tropical",
+          });
+          const asc = horoscope.Ascendant;
+          ascendantElement.innerHTML = `ASC ${asc.Sign.label} ${asc.ChartPosition.Ecliptic.ArcDegreesFormatted30}`;
         }
       }
 
