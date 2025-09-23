@@ -1,0 +1,66 @@
+---
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
+const CC_BY_SA_URL = "https://creativecommons.org/licenses/by-sa/4.0/";
+const CC_ICON_URL = "https://mirrors.creativecommons.org/presskit/icons/cc.svg";
+const BY_ICON_URL = "https://mirrors.creativecommons.org/presskit/icons/by.svg";
+const SA_ICON_URL = "https://mirrors.creativecommons.org/presskit/icons/sa.svg";
+
+interface Creator {
+  name: string;
+  url: string;
+}
+
+interface Work {
+  image: ImageMetadata;
+  title: string;
+  url: string;
+  creator: Creator;
+  year: number;
+}
+
+interface Props extends Work {}
+
+const { image, title, url, creator, year } = Astro.props;
+---
+
+<div class="full-width-image">
+  <Image src={image} alt="" />
+</div>
+<p class="attribution">
+  <a href={url}>{title}</a> © {year} by <a href={creator.url}>{creator.name}</a
+  > is licensed under <a href={CC_BY_SA_URL}>CC BY-SA 4.0</a><img
+    src={CC_ICON_URL}
+    alt=""
+    class="icon"
+  /><img src={BY_ICON_URL} alt="" class="icon" /><img
+    src={SA_ICON_URL}
+    alt=""
+    class="icon"
+  />
+</p>
+
+<style>
+  .full-width-image {
+    width: calc(100% + 4rem);
+    margin: -2rem -2rem 0 -2rem;
+  }
+
+  .full-width-image img {
+    width: 100%;
+    height: auto;
+    margin: 0;
+  }
+
+  .icon {
+    display: inline;
+    max-width: 1em;
+    max-height: 1em;
+    margin: 0 0 0 0.2em;
+  }
+
+  .attribution {
+    margin: 0.5rem 0 4rem 0;
+  }
+</style>
