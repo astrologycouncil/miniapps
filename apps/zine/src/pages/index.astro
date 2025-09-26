@@ -6,6 +6,11 @@ const pages = await getCollection("pages");
 const issues = [
   ...new Set(pages.map((page: any) => page.id.split("/")[0])),
 ].sort();
+
+function formatIssueTitle(issueId: string): string {
+  const [year, , , ...nameParts] = issueId.split("-");
+  return `${nameParts.join(" ")} ${year}`;
+}
 ---
 
 <Page>
@@ -20,7 +25,7 @@ const issues = [
             href={`/${issueId}/001`}
             class="text-xl text-blue-600 underline hover:text-blue-800"
           >
-            {issueId}
+            {formatIssueTitle(issueId)}
           </a>
         </li>
       ))
