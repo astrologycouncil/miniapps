@@ -1,0 +1,22 @@
+---
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const pages = await getCollection("pages");
+  const issues = [...new Set(pages.map((page: any) => page.id.split("/")[0]))];
+
+  return issues.map((issue) => ({
+    params: { issue },
+  }));
+}
+
+const { issue } = Astro.params;
+---
+
+<script is:inline define:vars={{ issue }}>
+  // Redirect to the first page of the issue
+  window.location.replace(`/${issue}/001`);
+</script>
+
+<!-- Fallback for users with JavaScript disabled -->
+<meta http-equiv="refresh" content="0; url=/{issue}/001" />
