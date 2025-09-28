@@ -1,6 +1,6 @@
 ---
 import "@styles/global.css";
-import { slide, ClientRouter } from "astro:transitions";
+import { ClientRouter, fade } from "astro:transitions";
 
 const embed = {
   version: "1",
@@ -26,7 +26,10 @@ const embed = {
   </head>
   <body class="bg-white">
     <main>
-      <article class="prose mx-auto p-8 pb-20" transition:animate={slide()}>
+      <article
+        class="prose mx-auto p-8 pb-20"
+        transition:animate={fade({ duration: "300ms" })}
+      >
         <slot />
       </article>
     </main>
