@@ -26,7 +26,7 @@ const { image, title, url, creator, year } = Astro.props;
 ---
 
 <div class="full-width-image">
-  <Image src={image} alt="" />
+  <img src={image.src} alt="" />
 </div>
 <p class="attribution">
   <a href={url}>{title}</a> © {year} by <a href={creator.url}>{creator.name}</a
