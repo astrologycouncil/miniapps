@@ -1,11 +1,7 @@
 ---
 import type { ImageMetadata } from "astro";
 import { Image } from "astro:assets";
-
-const CC_BY_SA_URL = "https://creativecommons.org/licenses/by-sa/4.0/";
-const CC_ICON_URL = "https://mirrors.creativecommons.org/presskit/icons/cc.svg";
-const BY_ICON_URL = "https://mirrors.creativecommons.org/presskit/icons/by.svg";
-const SA_ICON_URL = "https://mirrors.creativecommons.org/presskit/icons/sa.svg";
+import { LICENSE, type License } from "@utils/license";
 
 interface Creator {
   name: string;
@@ -13,32 +9,37 @@ interface Creator {
 }
 
 interface Work {
-  image: ImageMetadata;
+  image?: ImageMetadata;
   title: string;
   url: string;
   creator: Creator;
   year: number;
+  license?: License;
 }
 
 interface Props extends Work {}
 
-const { image, title, url, creator, year } = Astro.props;
+const {
+  image,
+  title,
+  url,
+  creator,
+  year,
+  license = LICENSE.BY_SA,
+} = Astro.props;
 ---
 
-<div class="full-width-image">
-  <img src={image.src} alt="" />
-</div>
+{
+  image && (
+    <div class="full-width-image">
+      <img src={image.src} alt="" />
+    </div>
+  )
+}
 <p class="attribution">
   <a href={url}>{title}</a> © {year} by <a href={creator.url}>{creator.name}</a
-  > is licensed under <a href={CC_BY_SA_URL}>CC BY-SA 4.0</a><img
-    src={CC_ICON_URL}
-    alt=""
-    class="icon"
-  /><img src={BY_ICON_URL} alt="" class="icon" /><img
-    src={SA_ICON_URL}
-    alt=""
-    class="icon"
-  />
+  > is licensed under <a href={license.url}>{license.name}</a>
+  {license.iconUrls.map((iconUrl) => <img src={iconUrl} alt="" class="icon" />)}
 </p>
 
 <style>
@@ -61,6 +62,6 @@ const { image, title, url, creator, year } = Astro.props;
   }
 
   .attribution {
-    margin: 0.5rem 0 4rem 0;
+    margin: 1.25em 0 1.25em 0;
   }
 </style>
