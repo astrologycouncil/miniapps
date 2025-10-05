@@ -1,16 +1,8 @@
 ---
-import { getCollection } from "astro:content";
 import Page from "@layouts/Page.astro";
+import { formatIssue, getIssues } from "@utils/issues";
 
-const pages = await getCollection("pages");
-const issues = [
-  ...new Set(pages.map((page: any) => page.id.split("/")[0])),
-].sort();
-
-function formatIssueTitle(issueId: string): string {
-  const [year, , , ...nameParts] = issueId.split("-");
-  return `${nameParts.join(" ")} ${year}`;
-}
+const issues = await getIssues();
 ---
 
 <Page>
@@ -25,7 +17,7 @@ function formatIssueTitle(issueId: string): string {
             href={`/${issueId}`}
             class="text-xl text-blue-600 underline hover:text-blue-800"
           >
-            {formatIssueTitle(issueId)}
+            {formatIssue(issueId)}
           </a>
         </li>
       ))
