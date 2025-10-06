@@ -2,7 +2,7 @@ import { getCollection } from "astro:content";
 
 export async function getIssues(): Promise<string[]> {
   const pages = await getCollection("pages");
-  const issues = pages.map((page: any) => page.id.split("/")[0]);
+  const issues = [...new Set(pages.map((page: any) => page.id.split("/")[0]))];
 
   return issues
     .filter((issue: string) => {
