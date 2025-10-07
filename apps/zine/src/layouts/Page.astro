@@ -14,7 +14,7 @@ const embed = {
   },
 };
 
-const backgroundColor = `bg-[${Astro.props.backgroundColor ?? "ffffff"}]`;
+const backgroundColor = `bg-[${Astro.props.backgroundColor ?? "#ffffff"}]`;
 const proseModifiers = (Astro.props.proseModifiers ?? [])
   .map((m: string) => `prose-${m}`)
   .join(" ");
