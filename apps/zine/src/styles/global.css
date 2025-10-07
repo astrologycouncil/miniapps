@@ -1,2 +1,3 @@
 @import "tailwindcss";
 @plugin '@tailwindcss/typography';
+@source inline("prose-invert bg-[#ffffff] bg-[#000000] bg-[#030645] bg-[#08082d]");

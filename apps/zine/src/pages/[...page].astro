@@ -29,7 +29,10 @@ const currentPage = currentPageIndex + 1;
 const totalPages = issuePages.length;
 ---
 
-<Page>
+<Page
+  backgroundColor={page.data.backgroundColor}
+  proseModifiers={page.data.proseModifiers}
+>
   <Content />
   <Navigation
     slot="navigation"

@@ -13,6 +13,11 @@ const embed = {
     },
   },
 };
+
+const backgroundColor = `bg-[${Astro.props.backgroundColor ?? "ffffff"}]`;
+const proseModifiers = (Astro.props.proseModifiers ?? [])
+  .map((m: string) => `prose-${m}`)
+  .join(" ");
 ---
 
 <html lang="en">
@@ -24,10 +29,10 @@ const embed = {
     <title>Zine</title>
     <ClientRouter />
   </head>
-  <body class="bg-white">
+  <body class={backgroundColor}>
     <main>
       <article
-        class="prose mx-auto p-8 pb-20"
+        class={`prose ${proseModifiers} mx-auto p-8 pb-20`}
         transition:animate={fade({ duration: "300ms" })}
       >
         <slot />

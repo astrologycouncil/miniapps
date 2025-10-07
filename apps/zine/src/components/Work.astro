@@ -38,7 +38,13 @@ const {
 }
 <p class="attribution">
   <a href={url}>{title}</a> © {year} by <a href={creator.url}>{creator.name}</a
-  > is licensed under <a href={license.url}>{license.name}</a>
+  >
+  <span
+    >{
+      license.name === LICENSE.ZERO.name ? "is marked" : "is licensed under"
+    }</span
+  >
+  <a href={license.url}>{license.name}</a>
   {license.iconUrls.map((iconUrl) => <img src={iconUrl} alt="" class="icon" />)}
 </p>
 
