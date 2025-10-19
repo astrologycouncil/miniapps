@@ -2,90 +2,255 @@
 interface Props {
   currentPage: number;
   totalPages: number;
+  backgroundColor?: string;
 }
 
-const { currentPage, totalPages } = Astro.props;
+const { currentPage, totalPages, backgroundColor = "#ffffff" } = Astro.props;
+const isDarkBackground = backgroundColor !== "#ffffff";
 ---
 
 <nav
-  class="fixed bottom-4 left-1/2 -translate-x-1/2 transform rounded-full border bg-white/90 px-4 py-2 shadow-lg backdrop-blur-sm"
+  class="fixed bottom-6 left-1/2 -translate-x-1/2 transform"
+  data-total-pages={totalPages}
 >
-  <div class="flex items-center gap-4">
+  <div class="flex items-center gap-3">
     <button
-      class="text-gray-600 transition-colors hover:text-black"
-      transition:name="nav-prev"
+      class={`flex h-12 w-12 items-center justify-center rounded-full transition-all duration-200 ${
+        isDarkBackground
+          ? "bg-white/90 text-gray-800 cursor-pointer shadow-lg backdrop-blur-sm"
+          : "bg-gray-800/90 text-white cursor-pointer shadow-lg backdrop-blur-sm"
+      }`}
       data-nav-prev
     >
-      ←
+      <svg
+        class="h-6 w-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M15 19l-7-7 7-7"></path>
+      </svg>
     </button>
 
-    <span
-      class="text-sm text-gray-600"
-      transition:name="nav-counter"
-      data-nav-counter
+    <button
+      class={`flex h-12 w-12 items-center justify-center rounded-full transition-all duration-200 ${
+        currentPage < totalPages
+          ? isDarkBackground
+            ? "bg-white/90 text-gray-800 cursor-pointer shadow-lg backdrop-blur-sm"
+            : "bg-gray-800/90 text-white cursor-pointer shadow-lg backdrop-blur-sm"
+          : isDarkBackground
+            ? "bg-white/30 text-gray-400 cursor-not-allowed"
+            : "bg-gray-300/50 text-gray-500 cursor-not-allowed"
+      }`}
+      data-nav-next
+      disabled={currentPage >= totalPages}
     >
-      {currentPage} / {totalPages}
-    </span>
-
-    {
-      currentPage < totalPages && (
-        <button
-          class="text-gray-600 transition-colors hover:text-black"
-          transition:name="nav-next"
-          data-nav-next
-        >
-          →
-        </button>
-      )
-    }
+      <svg
+        class="h-6 w-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9 5l7 7-7 7"></path>
+      </svg>
+    </button>
   </div>
 </nav>
 
 <script>
   import { navigate } from "astro:transitions/client";
 
-  function goNext() {
-    const counter = document.querySelector("[data-nav-counter]");
-    if (!counter) return;
-
-    const currentPage = parseInt(counter.textContent?.split("/")[0] || "1");
+  function go(next: boolean) {
     const issueId = window.location.pathname.split("/")[1];
-    const nextPage = String(currentPage + 1).padStart(3, "0");
-    navigate(`/${issueId}/${nextPage}`);
+    const currentPageNum = parseInt(
+      window.location.pathname.split("/")[2] || "1"
+    );
+
+    if (next) {
+      const nextPage = String(currentPageNum + 1).padStart(3, "0");
+      navigate(`/${issueId}/${nextPage}`);
+    } else {
+      if (currentPageNum <= 1) {
+        navigate("/");
+      } else {
+        const prevPage = String(currentPageNum - 1).padStart(3, "0");
+        navigate(`/${issueId}/${prevPage}`);
+      }
+    }
   }
 
-  function goPrev() {
-    history.back();
+  function toggleButtonColor(button: HTMLElement, isPressed: boolean) {
+    button.classList.remove(
+      "bg-white",
+      "bg-white/90",
+      "bg-gray-800",
+      "bg-gray-800/90"
+    );
+
+    if (isPressed) {
+      if (button.classList.contains("text-gray-800")) {
+        button.classList.add("bg-white");
+      } else {
+        button.classList.add("bg-gray-800");
+      }
+    } else {
+      if (button.classList.contains("text-gray-800")) {
+        button.classList.add("bg-white/90");
+      } else {
+        button.classList.add("bg-gray-800/90");
+      }
+    }
   }
 
-  document.addEventListener("click", (e) => {
-    const target = e.target as HTMLElement;
-    if (target?.matches("[data-nav-prev]")) {
-      e.preventDefault();
-      goPrev();
+  function setupNavigation() {
+    const nav = document.querySelector("nav[data-total-pages]") as HTMLElement;
+    if (!nav) return;
+    let startX = 0;
+    let startY = 0;
+    let activeButton: HTMLButtonElement | null = null;
+    let touchStartedOnButton = false;
+    function handleMouseDown(e: Event) {
+      const button = (e.target as HTMLElement).closest("button");
+      if (
+        button?.matches("[data-nav-prev], [data-nav-next]") &&
+        !button.disabled
+      ) {
+        activeButton = button;
+        button.style.transform = "scale(0.95)";
+        toggleButtonColor(button, true);
+      }
     }
-    if (target?.matches("[data-nav-next]")) {
-      e.preventDefault();
-      goNext();
+
+    function handleMouseUp(e: Event) {
+      if (activeButton) {
+        activeButton.style.transform = "";
+        toggleButtonColor(activeButton, false);
+        activeButton = null;
+      }
     }
-  });
 
-  let startX = 0;
-  document.addEventListener("touchstart", (e) => {
-    startX = e.touches[0].clientX;
-  });
+    function handleClick(e: Event) {
+      const target = e.target as HTMLElement;
+      const button = target.closest("button");
 
-  document.addEventListener("touchend", (e) => {
-    const diff = startX - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 50) {
-      const counter = document.querySelector("[data-nav-counter]");
-      if (!counter) return;
-
-      const currentPage = parseInt(counter.textContent?.split("/")[0] || "1");
-      const totalPages = parseInt(counter.textContent?.split("/")[1] || "1");
-
-      if (diff > 0 && currentPage < totalPages) goNext();
-      if (diff < 0) goPrev();
+      if (button?.matches("[data-nav-prev]") && !button.disabled) {
+        e.preventDefault();
+        go(false);
+      }
+      if (button?.matches("[data-nav-next]") && !button.disabled) {
+        e.preventDefault();
+        go(true);
+      }
     }
-  });
+
+    function handleTouchStart(e: TouchEvent) {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      touchStartedOnButton = false;
+
+      const button = (e.target as HTMLElement).closest("button");
+      if (
+        button?.matches("[data-nav-prev], [data-nav-next]") &&
+        !button.disabled
+      ) {
+        e.preventDefault();
+        activeButton = button;
+        touchStartedOnButton = true;
+        button.style.transform = "scale(0.95)";
+        toggleButtonColor(button, true);
+      }
+    }
+
+    function handleTouchMove(e: TouchEvent) {
+      if (activeButton) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    }
+
+    function handleContextMenu(e: Event) {
+      const button = (e.target as HTMLElement).closest("button");
+      if (button?.matches("[data-nav-prev], [data-nav-next]")) {
+        e.preventDefault();
+      }
+    }
+
+    function handleTouchEnd(e: TouchEvent) {
+      const diff = startX - e.changedTouches[0].clientX;
+
+      if (activeButton) {
+        activeButton.style.transform = "";
+        toggleButtonColor(activeButton, false);
+
+        const endX = e.changedTouches[0].clientX;
+        const endY = e.changedTouches[0].clientY;
+        const endElement = document.elementFromPoint(endX, endY);
+        const endButton = endElement?.closest("button");
+
+        if (
+          touchStartedOnButton &&
+          endButton === activeButton &&
+          !activeButton.disabled
+        ) {
+          if (activeButton.matches("[data-nav-prev]")) {
+            go(false);
+          } else if (activeButton.matches("[data-nav-next]")) {
+            go(true);
+          }
+        }
+
+        activeButton = null;
+      }
+
+      if (Math.abs(diff) > 50 && !touchStartedOnButton) {
+        const currentPageNum = parseInt(
+          window.location.pathname.split("/")[2] || "1"
+        );
+        const totalPages = parseInt(nav.dataset.totalPages || "1");
+        if (diff > 0 && currentPageNum < totalPages) go(true);
+        if (diff < 0) go(false);
+      }
+    }
+
+    function handleTouchCancel() {
+      if (activeButton) {
+        activeButton.style.transform = "";
+        toggleButtonColor(activeButton, false);
+        activeButton = null;
+      }
+      touchStartedOnButton = false;
+    }
+
+    document.addEventListener("mousedown", handleMouseDown);
+    document.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener("click", handleClick);
+    document.addEventListener("touchstart", handleTouchStart, {
+      passive: false,
+    });
+    document.addEventListener("touchmove", handleTouchMove, { passive: false });
+    document.addEventListener("contextmenu", handleContextMenu);
+    document.addEventListener("touchend", handleTouchEnd);
+    document.addEventListener("touchcancel", handleTouchCancel);
+    document.addEventListener("astro:before-preparation", () => {
+      document.removeEventListener("mousedown", handleMouseDown);
+      document.removeEventListener("mouseup", handleMouseUp);
+      document.removeEventListener("click", handleClick);
+      document.removeEventListener("touchstart", handleTouchStart);
+      document.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener("contextmenu", handleContextMenu);
+      document.removeEventListener("touchend", handleTouchEnd);
+      document.removeEventListener("touchcancel", handleTouchCancel);
+    });
+  }
+
+  setupNavigation();
+  document.addEventListener("astro:page-load", setupNavigation);
 </script>
