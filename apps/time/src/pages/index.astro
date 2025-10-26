@@ -7,7 +7,7 @@ const embed = {
   button: {
     title: "What time is it?",
     action: {
-      type: "launch_frame",
+      type: "launch_miniapp",
       name: "Time",
     },
   },
@@ -19,7 +19,6 @@ const embed = {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="fc:miniapp" content={JSON.stringify(embed)} />
-    <meta name="fc:frame" content={JSON.stringify(embed)} />
     <title>Time</title>
   </head>
   <body class="bg-white">

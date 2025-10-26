@@ -8,7 +8,7 @@ const embed = {
   button: {
     title: "Read the Zine",
     action: {
-      type: "launch_frame",
+      type: "launch_miniapp",
       name: "Zine",
     },
   },
@@ -25,7 +25,6 @@ const proseModifiers = (Astro.props.proseModifiers ?? [])
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="fc:miniapp" content={JSON.stringify(embed)} />
-    <meta name="fc:frame" content={JSON.stringify(embed)} />
     <title>Zine</title>
     <ClientRouter />
   </head>
