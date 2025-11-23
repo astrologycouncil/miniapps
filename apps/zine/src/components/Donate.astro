@@ -1,0 +1,22 @@
+<button
+  id="donate"
+  class="w-full touch-manipulation rounded-lg bg-black px-6 py-4 text-base font-medium text-white active:opacity-70"
+  >donate</button
+>
+
+<script>
+  import { sdk } from "@farcaster/miniapp-sdk";
+
+  const button = document.getElementById("donate");
+  const token = "eip155:8453/erc20:0x87dDa5C5cec649f8BaB5eBF5571804E64E400b07";
+  const amount = "83333333000000000000000000";
+  const recipientAddress = "0x712acAB9c80b04371449463820Fa591A995890CA";
+
+  button!.addEventListener("click", async () => {
+    await sdk.actions.sendToken({
+      token,
+      amount,
+      recipientAddress,
+    });
+  });
+</script>
