@@ -38,5 +38,10 @@ const proseModifiers = (Astro.props.proseModifiers ?? [])
       </article>
     </main>
     <slot name="navigation" />
+    <script>
+      import { sdk } from "@farcaster/miniapp-sdk";
+
+      await sdk.actions.ready();
+    </script>
   </body>
 </html>
