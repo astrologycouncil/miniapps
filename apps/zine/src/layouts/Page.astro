@@ -2,9 +2,13 @@
 import "@styles/global.css";
 import { ClientRouter, fade } from "astro:transitions";
 
+const imageUrl =
+  Astro.props.imageUrl ??
+  "https://zine.astrologycouncil.org/opengraph-image.jpg?v=2";
+
 const embed = {
   version: "1",
-  imageUrl: "https://zine.astrologycouncil.org/opengraph-image.jpg?v=2",
+  imageUrl,
   button: {
     title: "Read the Zine",
     action: {

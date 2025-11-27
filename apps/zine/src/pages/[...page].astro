@@ -27,11 +27,15 @@ const issuePages = pages
 const currentPageIndex = issuePages.findIndex((p) => p.id === page.id);
 const currentPage = currentPageIndex + 1;
 const totalPages = issuePages.length;
+
+const pageId = page.id.split("/")[1];
+const imageUrl = `https://zine.astrologycouncil.org/${issueId}/${pageId}.jpg`;
 ---
 
 <Page
   backgroundColor={page.data.backgroundColor}
   proseModifiers={page.data.proseModifiers}
+  imageUrl={imageUrl}
 >
   <Content />
   <Navigation
