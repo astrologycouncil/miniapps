@@ -1,0 +1,29 @@
+---
+import { formatIssue, getIssues } from "@utils/issues";
+
+const issues = await getIssues();
+---
+
+<div class="not-prose flex flex-col gap-5">
+  {
+    issues.map((issueId) => (
+      <a
+        href={`/${issueId}/001`}
+        class="relative block aspect-[3/2] w-full touch-manipulation overflow-hidden rounded-2xl transition-transform duration-200 active:scale-[0.98]"
+      >
+        <img
+          src={`/${issueId}/001.jpg`}
+          alt={formatIssue(issueId)}
+          class="h-full w-full object-cover"
+          loading="lazy"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+        <div class="absolute bottom-0 left-0 right-0 px-6 pb-7">
+          <h2 class="text-3xl font-bold text-white">
+            {formatIssue(issueId)} ✨
+          </h2>
+        </div>
+      </a>
+    ))
+  }
+</div>

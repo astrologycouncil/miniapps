@@ -1,9 +1,7 @@
 ---
 import Donate from "@components/Donate.astro";
+import Issues from "@components/Issues.astro";
 import Page from "@layouts/Page.astro";
-import { formatIssue, getIssues } from "@utils/issues";
-
-const issues = await getIssues();
 ---
 
 <Page>
@@ -11,15 +9,7 @@ const issues = await getIssues();
 
   <h2>read ☟</h2>
 
-  <ol>
-    {
-      issues.map((issueId) => (
-        <li>
-          <a href={`/${issueId}/001`}>{formatIssue(issueId)}</a>
-        </li>
-      ))
-    }
-  </ol>
+  <Issues />
 
   <h2>donate ☟</h2>
 

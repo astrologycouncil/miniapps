@@ -24,6 +24,6 @@ export async function getIssues(): Promise<string[]> {
 }
 
 export function formatIssue(issue: string): string {
-  const [year, , , ...nameParts] = issue.split("-");
-  return `${nameParts.join(" ")} ${year}`;
+  const [, , , ...nameParts] = issue.split("-");
+  return `${nameParts.join(" ")}`;
 }
